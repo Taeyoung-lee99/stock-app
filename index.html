@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0053)file:///C:/Users/dream/Downloads/stock-app-final.html -->
+<!-- saved from url=(0052)file:///C:/Users/dream/Downloads/stock-app-dart.html -->
 <html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
@@ -201,7 +201,7 @@ input,select,button{font-family:inherit;}
         <span style="display:flex;align-items:center;gap:3px;"><span style="width:10px;height:2px;background:rgba(127,119,221,0.6);display:inline-block;border-radius:1px;"></span>볼린저</span>
       </div>
       <div class="chart-wrap"><canvas id="priceChart" width="550" height="260" style="display: block; box-sizing: border-box; height: 200px; width: 422px;"></canvas></div>
-      <div class="vol-bars" id="vol-bars"><div class="vol-bar" style="height:27%;background:rgba(216,90,48,0.4)"></div><div class="vol-bar" style="height:49%;background:rgba(216,90,48,0.4)"></div><div class="vol-bar" style="height:41%;background:rgba(216,90,48,0.4)"></div><div class="vol-bar" style="height:62%;background:rgba(216,90,48,0.4)"></div><div class="vol-bar" style="height:22%;background:rgba(216,90,48,0.4)"></div><div class="vol-bar" style="height:100%;background:rgba(216,90,48,0.4)"></div><div class="vol-bar" style="height:27%;background:rgba(216,90,48,0.4)"></div><div class="vol-bar" style="height:37%;background:rgba(216,90,48,0.4)"></div><div class="vol-bar" style="height:40%;background:rgba(216,90,48,0.4)"></div><div class="vol-bar" style="height:54%;background:rgba(216,90,48,0.4)"></div><div class="vol-bar" style="height:75%;background:rgba(216,90,48,0.4)"></div><div class="vol-bar" style="height:98%;background:rgba(216,90,48,0.4)"></div><div class="vol-bar" style="height:67%;background:rgba(24,95,165,0.4)"></div><div class="vol-bar" style="height:58%;background:rgba(24,95,165,0.4)"></div><div class="vol-bar" style="height:32%;background:rgba(24,95,165,0.4)"></div><div class="vol-bar" style="height:85%;background:rgba(24,95,165,0.4)"></div><div class="vol-bar" style="height:67%;background:rgba(24,95,165,0.4)"></div><div class="vol-bar" style="height:77%;background:rgba(24,95,165,0.4)"></div><div class="vol-bar" style="height:74%;background:rgba(24,95,165,0.4)"></div><div class="vol-bar" style="height:95%;background:rgba(24,95,165,0.4)"></div></div>
+      <div class="vol-bars" id="vol-bars"><div class="vol-bar" style="height:39%;background:rgba(216,90,48,0.4)"></div><div class="vol-bar" style="height:38%;background:rgba(216,90,48,0.4)"></div><div class="vol-bar" style="height:29%;background:rgba(216,90,48,0.4)"></div><div class="vol-bar" style="height:78%;background:rgba(216,90,48,0.4)"></div><div class="vol-bar" style="height:63%;background:rgba(216,90,48,0.4)"></div><div class="vol-bar" style="height:39%;background:rgba(216,90,48,0.4)"></div><div class="vol-bar" style="height:36%;background:rgba(216,90,48,0.4)"></div><div class="vol-bar" style="height:27%;background:rgba(216,90,48,0.4)"></div><div class="vol-bar" style="height:31%;background:rgba(216,90,48,0.4)"></div><div class="vol-bar" style="height:38%;background:rgba(216,90,48,0.4)"></div><div class="vol-bar" style="height:64%;background:rgba(216,90,48,0.4)"></div><div class="vol-bar" style="height:58%;background:rgba(216,90,48,0.4)"></div><div class="vol-bar" style="height:64%;background:rgba(24,95,165,0.4)"></div><div class="vol-bar" style="height:48%;background:rgba(24,95,165,0.4)"></div><div class="vol-bar" style="height:100%;background:rgba(24,95,165,0.4)"></div><div class="vol-bar" style="height:26%;background:rgba(24,95,165,0.4)"></div><div class="vol-bar" style="height:93%;background:rgba(24,95,165,0.4)"></div><div class="vol-bar" style="height:94%;background:rgba(24,95,165,0.4)"></div><div class="vol-bar" style="height:85%;background:rgba(24,95,165,0.4)"></div><div class="vol-bar" style="height:78%;background:rgba(24,95,165,0.4)"></div></div>
     </div>
     <div class="patterns-grid"><div class="pc "><div class="pc-name">🎯 컵위드핸들</div><span class="badge b-gray">미감지</span></div><div class="pc "><div class="pc-name">📈 이중 바닥</div><span class="badge b-gray">미감지</span></div><div class="pc active-p"><div class="pc-name">📐 상승 삼각형</div><span class="badge b-amber">형성중</span></div><div class="pc "><div class="pc-name">💎 역헤드앤숄더</div><span class="badge b-gray">미감지</span></div><div class="pc "><div class="pc-name">🚀 깃발형</div><span class="badge b-gray">미감지</span></div><div class="pc "><div class="pc-name">📊 상승 쐐기</div><span class="badge b-gray">미감지</span></div></div>
     <div class="mc-grid">
@@ -728,8 +728,28 @@ function renderValuation(name,data){
   `;
 }
 
-function renderFinancials(name,data){
-  if(!data.income||data.income.length<2){document.getElementById('fin-result').innerHTML='<div class="loading">재무 데이터 없음</div>';return;}
+async function renderFinancials(name,data){
+  document.getElementById('fin-result').innerHTML='<div class="loading"><div class="spinner"></div>DART 재무데이터 로딩 중...</div>';
+
+  // DART API로 실제 재무데이터 가져오기
+  const ticker=getTickerKR(name)||STOCK_MAP[name];
+  if(ticker){
+    try{
+      const r=await fetch(`/api/quote?ticker=${encodeURIComponent(ticker)}&type=finance`);
+      if(r.ok){
+        const j=await r.json();
+        if(j.income&&j.income.length>=2){
+          data={...data,income:j.income};
+        }
+      }
+    }catch(e){}
+  }
+
+  if(!data.income||data.income.length<2){
+    document.getElementById('fin-result').innerHTML='<div style="text-align:center;padding:2rem;color:var(--text2);font-size:13px;">재무 데이터를 찾을 수 없습니다.<br>종목코드로 다시 검색해보세요.</div>';
+    return;
+  }
+
   const inc=data.income,years=inc.map(i=>i.year),revs=inc.map(i=>i.revenue),ops=inc.map(i=>i.op),nets=inc.map(i=>i.net);
   const gRate=(arr,i)=>i===0?null:arr[i-1]!==0?((arr[i]-arr[i-1])/Math.abs(arr[i-1])*100).toFixed(1):null;
   const fmtB=v=>{const abs=Math.abs(v);const s=abs>=10000?(abs/10000).toFixed(1)+'조':(abs).toLocaleString()+'억';return(v<0?'-':'')+s;};
