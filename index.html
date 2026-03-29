@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ko">
-<head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
-<meta name="theme-color" content="#ffffff"/>
+<!-- saved from url=(0053)file:///C:/Users/dream/Downloads/stock-app-final.html -->
+<html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#ffffff">
 <title>나의 주식 앱</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -160,28 +160,164 @@ input,select,button{font-family:inherit;}
 <div id="analyze" class="screen active">
   <div style="height:12px;"></div>
   <div class="search-row">
-    <input class="inp" type="text" id="stockInput" value="삼성전자" placeholder="종목명 입력"/>
+    <input class="inp" type="text" id="stockInput" value="삼성전자" placeholder="종목명 입력">
     <button class="btn btn-primary" onclick="fetchAll()">분석</button>
   </div>
   <div class="chip-row">
-    <div class="chip" onclick="ql('삼성전자')">삼성전자</div>
-    <div class="chip" onclick="ql('SK하이닉스')">SK하이닉스</div>
-    <div class="chip" onclick="ql('NAVER')">NAVER</div>
-    <div class="chip" onclick="ql('현대차')">현대차</div>
-    <div class="chip" onclick="ql('카카오')">카카오</div>
-    <div class="chip" onclick="ql('LS ELECTRIC')">LS ELECTRIC</div>
+    <div class="chip" onclick="ql(&#39;삼성전자&#39;)">삼성전자</div>
+    <div class="chip" onclick="ql(&#39;SK하이닉스&#39;)">SK하이닉스</div>
+    <div class="chip" onclick="ql(&#39;NAVER&#39;)">NAVER</div>
+    <div class="chip" onclick="ql(&#39;현대차&#39;)">현대차</div>
+    <div class="chip" onclick="ql(&#39;카카오&#39;)">카카오</div>
+    <div class="chip" onclick="ql(&#39;LS ELECTRIC&#39;)">LS ELECTRIC</div>
   </div>
-  <div id="stock-result"><div class="loading"><div class="spinner"></div>데이터 로딩 중...</div></div>
+  <div id="stock-result">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+        <div><div style="font-size:16px;font-weight:700;">삼성전자</div>
+          <div style="font-size:11px;color:var(--text2);">005930.KS · 반도체</div>
+          <div style="font-size:11px;color:var(--blue-text);margin-top:2px;cursor:pointer;" onclick="openNaver(&#39;삼성전자&#39;)">📊 네이버 증권에서 현재가 확인 →</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:24px;font-weight:700;" class="down">179,700원</div>
+          <div style="font-size:12px;" class="down">▼ 400 (-0.22%)</div>
+          <div style="font-size:10px;color:var(--green);margin-top:2px;display:flex;align-items:center;gap:3px;justify-content:flex-end;"><span class="live-dot"></span>참고가</div>
+          <div style="font-size:11px;color:var(--text2);">시총 1143조</div>
+        </div>
+      </div>
+    </div>
+    <div class="pattern-alert pa-w">
+      <div class="pa-icon">📐</div>
+      <div><div class="pa-title">상승 삼각형 형성중</div>
+        <div class="pa-desc">조건 충족 시 알람 설정 권장</div>
+      </div>
+    </div>
+    <button onclick="openNaver(&#39;삼성전자&#39;)" style="width:100%;padding:12px;border:0.5px solid var(--blue);border-radius:var(--radius-lg);background:var(--blue-bg);color:var(--blue-text);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:8px;">📊 네이버 증권에서 실시간 현재가 확인하기</button>
+    <div class="card" style="padding:10px 12px;">
+      <div style="display:flex;gap:6px;margin-bottom:8px;align-items:center;"><button class="period-btn " onclick="changePeriod(&#39;1W&#39;)">1W</button><button class="period-btn active" onclick="changePeriod(&#39;1M&#39;)">1M</button><button class="period-btn " onclick="changePeriod(&#39;3M&#39;)">3M</button></div>
+      <div style="display:flex;gap:10px;font-size:10px;color:var(--text2);margin-bottom:6px;">
+        <span style="display:flex;align-items:center;gap:3px;"><span style="width:10px;height:2px;background:#378ADD;display:inline-block;border-radius:1px;"></span>종가</span>
+        <span style="display:flex;align-items:center;gap:3px;"><span style="width:10px;height:2px;background:#5DCAA5;display:inline-block;border-radius:1px;"></span>MA20</span>
+        <span style="display:flex;align-items:center;gap:3px;"><span style="width:10px;height:2px;background:rgba(127,119,221,0.6);display:inline-block;border-radius:1px;"></span>볼린저</span>
+      </div>
+      <div class="chart-wrap"><canvas id="priceChart" width="550" height="260" style="display: block; box-sizing: border-box; height: 200px; width: 422px;"></canvas></div>
+      <div class="vol-bars" id="vol-bars"><div class="vol-bar" style="height:27%;background:rgba(216,90,48,0.4)"></div><div class="vol-bar" style="height:49%;background:rgba(216,90,48,0.4)"></div><div class="vol-bar" style="height:41%;background:rgba(216,90,48,0.4)"></div><div class="vol-bar" style="height:62%;background:rgba(216,90,48,0.4)"></div><div class="vol-bar" style="height:22%;background:rgba(216,90,48,0.4)"></div><div class="vol-bar" style="height:100%;background:rgba(216,90,48,0.4)"></div><div class="vol-bar" style="height:27%;background:rgba(216,90,48,0.4)"></div><div class="vol-bar" style="height:37%;background:rgba(216,90,48,0.4)"></div><div class="vol-bar" style="height:40%;background:rgba(216,90,48,0.4)"></div><div class="vol-bar" style="height:54%;background:rgba(216,90,48,0.4)"></div><div class="vol-bar" style="height:75%;background:rgba(216,90,48,0.4)"></div><div class="vol-bar" style="height:98%;background:rgba(216,90,48,0.4)"></div><div class="vol-bar" style="height:67%;background:rgba(24,95,165,0.4)"></div><div class="vol-bar" style="height:58%;background:rgba(24,95,165,0.4)"></div><div class="vol-bar" style="height:32%;background:rgba(24,95,165,0.4)"></div><div class="vol-bar" style="height:85%;background:rgba(24,95,165,0.4)"></div><div class="vol-bar" style="height:67%;background:rgba(24,95,165,0.4)"></div><div class="vol-bar" style="height:77%;background:rgba(24,95,165,0.4)"></div><div class="vol-bar" style="height:74%;background:rgba(24,95,165,0.4)"></div><div class="vol-bar" style="height:95%;background:rgba(24,95,165,0.4)"></div></div>
+    </div>
+    <div class="patterns-grid"><div class="pc "><div class="pc-name">🎯 컵위드핸들</div><span class="badge b-gray">미감지</span></div><div class="pc "><div class="pc-name">📈 이중 바닥</div><span class="badge b-gray">미감지</span></div><div class="pc active-p"><div class="pc-name">📐 상승 삼각형</div><span class="badge b-amber">형성중</span></div><div class="pc "><div class="pc-name">💎 역헤드앤숄더</div><span class="badge b-gray">미감지</span></div><div class="pc "><div class="pc-name">🚀 깃발형</div><span class="badge b-gray">미감지</span></div><div class="pc "><div class="pc-name">📊 상승 쐐기</div><span class="badge b-gray">미감지</span></div></div>
+    <div class="mc-grid">
+      <div class="mc"><div class="mc-label">RSI(14)</div><div class="mc-value" style="color:var(--text)">51</div><div class="mc-sub">중립</div></div>
+      <div class="mc"><div class="mc-label">PER</div><div class="mc-value">27.2</div><div class="mc-sub">Forward 22</div></div>
+      <div class="mc"><div class="mc-label">돌파선</div><div class="mc-value" style="font-size:13px;">221,100</div><div class="mc-sub">+23.0%</div></div>
+    </div>
+    <button class="action-btn" onclick="addAlarmFromAnalyze(&#39;삼성전자&#39;,221100)">+ 돌파선 221,100원 알람 설정</button>
+  </div>
 </div>
 
 <div id="valuation" class="screen">
   <div style="height:12px;"></div>
-  <div id="val-result"><div class="loading"><div class="spinner"></div>가치평가 로딩 중...</div></div>
+  <div id="val-result">
+    <div class="section-label">삼성전자 · 상세 가치평가</div>
+    <div class="fper-card">
+      <div style="font-size:11px;color:var(--text2);margin-bottom:4px;">Forward PER (내년 실적 기준)</div>
+      <div style="font-size:28px;font-weight:700;color:var(--green);">22x</div>
+      <div style="display:flex;gap:16px;margin-top:8px;">
+        <div style="font-size:11px;color:var(--text2);">현재 PER <span style="font-weight:600;color:var(--text);">27.2x</span></div>
+        <div style="font-size:11px;color:var(--text2);">업종 평균 <span style="font-weight:600;color:var(--text);">15.2x</span></div>
+        <div style="font-size:11px;color:var(--green-text);">▼ 이익 성장 기대</div>
+      </div>
+      <div style="font-size:11px;color:var(--amber-text);margin-top:8px;padding-top:8px;border-top:0.5px solid var(--border);">
+        업종 대비 44.7% 고평가
+      </div>
+    </div>
+    <div class="val-grid">
+      <div class="val-card"><div class="val-label">PER</div><div class="val-value">27.2x</div><div class="val-sub">업종 18.5x</div><div class="val-bar-wrap"><div class="val-bar" style="width:68%;background:#E24B4A;"></div></div></div>
+      <div class="val-card"><div class="val-label">PBR</div><div class="val-value">1.4x</div><div class="val-sub">업종 2.8x</div><div class="val-bar-wrap"><div class="val-bar" style="width:18%;background:#639922;"></div></div></div>
+      <div class="val-card"><div class="val-label">ROE</div><div class="val-value" style="color:var(--text)">12.4%</div><div class="val-sub">업종 15%</div></div>
+      <div class="val-card"><div class="val-label">배당수익률</div><div class="val-value" style="font-size:18px;">0.93%</div><div class="val-sub">연간</div></div>
+    </div>
+    <div class="card">
+      <div class="section-label" style="margin-bottom:10px;">EPS 기반 PER 밴드</div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+        <div style="font-size:11px;color:var(--text2);width:44px;">PER 8x</div>
+        <div style="flex:1;height:5px;background:var(--bg3);border-radius:2px;overflow:hidden;"><div style="height:100%;width:21%;background:#378ADD;border-radius:2px;"></div></div>
+        <div style="font-size:11px;font-weight:400;color:var(--text);width:76px;text-align:right;">52,824원</div>
+      </div><div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+        <div style="font-size:11px;color:var(--text2);width:44px;">PER 10x</div>
+        <div style="flex:1;height:5px;background:var(--bg3);border-radius:2px;overflow:hidden;"><div style="height:100%;width:26%;background:#378ADD;border-radius:2px;"></div></div>
+        <div style="font-size:11px;font-weight:400;color:var(--text);width:76px;text-align:right;">66,030원</div>
+      </div><div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+        <div style="font-size:11px;color:var(--text2);width:44px;">PER 12x</div>
+        <div style="flex:1;height:5px;background:var(--bg3);border-radius:2px;overflow:hidden;"><div style="height:100%;width:31%;background:#378ADD;border-radius:2px;"></div></div>
+        <div style="font-size:11px;font-weight:400;color:var(--text);width:76px;text-align:right;">79,236원</div>
+      </div><div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+        <div style="font-size:11px;color:var(--text2);width:44px;">PER 15x</div>
+        <div style="flex:1;height:5px;background:var(--bg3);border-radius:2px;overflow:hidden;"><div style="height:100%;width:39%;background:#378ADD;border-radius:2px;"></div></div>
+        <div style="font-size:11px;font-weight:400;color:var(--text);width:76px;text-align:right;">99,045원</div>
+      </div><div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+        <div style="font-size:11px;color:var(--text2);width:44px;">PER 20x</div>
+        <div style="flex:1;height:5px;background:var(--bg3);border-radius:2px;overflow:hidden;"><div style="height:100%;width:51%;background:#378ADD;border-radius:2px;"></div></div>
+        <div style="font-size:11px;font-weight:400;color:var(--text);width:76px;text-align:right;">132,060원</div>
+      </div><div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+        <div style="font-size:11px;color:var(--text2);width:44px;">PER 25x</div>
+        <div style="flex:1;height:5px;background:var(--bg3);border-radius:2px;overflow:hidden;"><div style="height:100%;width:64%;background:#378ADD;border-radius:2px;"></div></div>
+        <div style="font-size:11px;font-weight:400;color:var(--text);width:76px;text-align:right;">165,075원</div>
+      </div>
+      <div style="font-size:10px;color:var(--text2);margin-top:4px;">현재가 <span style="font-weight:600;color:var(--text);">179,700원</span></div>
+    </div>
+    <div class="card"><div class="section-label" style="margin-bottom:8px;">Graham DCF 적정가</div>
+      <div style="font-size:28px;font-weight:700;color:var(--down);">150,948원</div>
+      <div style="font-size:12px;color:var(--text2);margin-top:4px;">현재가 대비 <span style="font-weight:600;color:var(--red-text);">-16.0%</span></div>
+    </div>
+  </div>
 </div>
 
 <div id="financials" class="screen">
   <div style="height:12px;"></div>
-  <div id="fin-result"><div class="loading"><div class="spinner"></div>재무 데이터 로딩 중...</div></div>
+  <div id="fin-result">
+    <div class="section-label">삼성전자 · 재무제표 10개년 <span style="font-weight:400;font-size:11px;">(억원)</span></div>
+    <div class="card" style="padding:10px 12px;margin-bottom:10px;">
+      <div style="display:flex;gap:12px;font-size:11px;color:var(--text2);margin-bottom:8px;">
+        <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:3px;background:#378ADD;display:inline-block;border-radius:1px;"></span>매출</span>
+        <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:3px;background:#1D9E75;display:inline-block;border-radius:1px;"></span>영업이익</span>
+        <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:3px;background:#7F77DD;display:inline-block;border-radius:1px;"></span>순이익</span>
+      </div>
+      <div style="position:relative;width:100%;height:240px;"><canvas id="finChart" height="0" style="display: block; box-sizing: border-box; height: 0px; width: 0px;" width="0"></canvas></div>
+    </div>
+    <div class="card" style="padding:0 14px;">
+      <table class="fin-table">
+        <thead><tr><th style="text-align:left;">구분</th><th>2015</th><th>2016</th><th>2017</th><th>2018</th><th>2019</th><th>2020</th><th>2021</th><th>2022</th><th>2023</th><th>2024E</th></tr></thead>
+        <tbody>
+          <tr><td>매출액</td><td>200.7조<br></td><td>201.9조<br><span class="growth-pill g-up">▲0.6%</span></td><td>239.6조<br><span class="growth-pill g-up">▲18.7%</span></td><td>243.8조<br><span class="growth-pill g-up">▲1.8%</span></td><td>230.4조<br><span class="growth-pill g-down">▼5.5%</span></td><td>236.8조<br><span class="growth-pill g-up">▲2.8%</span></td><td>279.6조<br><span class="growth-pill g-up">▲18.1%</span></td><td>302.2조<br><span class="growth-pill g-up">▲8.1%</span></td><td>258.9조<br><span class="growth-pill g-down">▼14.3%</span></td><td>300.0조<br><span class="growth-pill g-up">▲15.9%</span></td></tr>
+          <tr><td>영업이익</td><td style="color:var(--text)">26.4조<br></td><td style="color:var(--text)">29.2조<br><span class="growth-pill g-up">▲10.9%</span></td><td style="color:var(--text)">53.5조<br><span class="growth-pill g-up">▲83%</span></td><td style="color:var(--text)">58.9조<br><span class="growth-pill g-up">▲10%</span></td><td style="color:var(--text)">27.8조<br><span class="growth-pill g-down">▼52.8%</span></td><td style="color:var(--text)">36.0조<br><span class="growth-pill g-up">▲29.6%</span></td><td style="color:var(--text)">51.6조<br><span class="growth-pill g-up">▲43.5%</span></td><td style="color:var(--text)">43.4조<br><span class="growth-pill g-down">▼16%</span></td><td style="color:var(--text)">6.6조<br><span class="growth-pill g-down">▼84.9%</span></td><td style="color:var(--text)">36.0조<br><span class="growth-pill g-up">▲448.2%</span></td></tr>
+          <tr><td>당기순이익</td><td style="color:var(--text)">19.1조<br></td><td style="color:var(--text)">22.7조<br><span class="growth-pill g-up">▲19.2%</span></td><td style="color:var(--text)">42.2조<br><span class="growth-pill g-up">▲85.6%</span></td><td style="color:var(--text)">44.3조<br><span class="growth-pill g-up">▲5.1%</span></td><td style="color:var(--text)">21.7조<br><span class="growth-pill g-down">▼51%</span></td><td style="color:var(--text)">26.4조<br><span class="growth-pill g-up">▲21.5%</span></td><td style="color:var(--text)">39.6조<br><span class="growth-pill g-up">▲49.9%</span></td><td style="color:var(--text)">34.7조<br><span class="growth-pill g-down">▼12.4%</span></td><td style="color:var(--text)">15.5조<br><span class="growth-pill g-down">▼55.3%</span></td><td style="color:var(--text)">28.0조<br><span class="growth-pill g-up">▲80.8%</span></td></tr>
+          <tr><td>영업이익률</td><td>13.1%</td><td>14.5%</td><td>22.3%</td><td>24.2%</td><td>12.1%</td><td>15.2%</td><td>18.5%</td><td>14.4%</td><td>2.5%</td><td>12.0%</td></tr>
+          <tr><td>순이익률</td><td>9.5%</td><td>11.3%</td><td>17.6%</td><td>18.2%</td><td>9.4%</td><td>11.2%</td><td>14.2%</td><td>11.5%</td><td>6.0%</td><td>9.3%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card" style="margin-top:10px;">
+      <div class="section-label" style="margin-bottom:10px;">수익성 지표</div>
+      
+        <div class="margin-row">
+          <div class="margin-label">영업이익률</div>
+          <div class="margin-bar-bg"><div class="margin-bar" style="width:36%;background:#1D9E75;"></div></div>
+          <div class="margin-val" style="color:var(--text)">12.0%</div>
+        </div>
+      
+        <div class="margin-row">
+          <div class="margin-label">순이익률</div>
+          <div class="margin-bar-bg"><div class="margin-bar" style="width:27.900000000000002%;background:#7F77DD;"></div></div>
+          <div class="margin-val" style="color:var(--text)">9.3%</div>
+        </div>
+      
+        <div class="margin-row">
+          <div class="margin-label">ROE</div>
+          <div class="margin-bar-bg"><div class="margin-bar" style="width:37.2%;background:#D85A30;"></div></div>
+          <div class="margin-val" style="color:var(--text)">12.4%</div>
+        </div>
+      
+    </div>
+  </div>
 </div>
 
 <div id="screener" class="screen">
@@ -240,10 +376,10 @@ input,select,button{font-family:inherit;}
       </div>
     </div>
     <div class="search-row" style="margin-bottom:8px;">
-      <input class="inp" type="text" id="tg-token" placeholder="Bot Token"/>
+      <input class="inp" type="text" id="tg-token" placeholder="Bot Token">
     </div>
     <div class="search-row">
-      <input class="inp" type="text" id="tg-chatid" placeholder="Chat ID"/>
+      <input class="inp" type="text" id="tg-chatid" placeholder="Chat ID">
       <button class="btn" onclick="testTelegram()">테스트</button>
     </div>
     <button class="btn btn-primary" style="width:100%;margin-bottom:12px;" onclick="saveTelegram()">저장</button>
@@ -259,7 +395,7 @@ input,select,button{font-family:inherit;}
         <option value="rsi_oversold">RSI 과매도 (30↓)</option>
         <option value="rsi_overbought">RSI 과매수 (70↑)</option>
       </select>
-      <input class="inp" type="number" id="alarm-price" placeholder="목표가 (원)" style="margin-bottom:8px;"/>
+      <input class="inp" type="number" id="alarm-price" placeholder="목표가 (원)" style="margin-bottom: 8px; display: block;">
     </div>
     <button class="btn btn-primary" style="width:100%;" onclick="addAlarm()">+ 알람 추가</button>
   </div>
@@ -269,25 +405,25 @@ input,select,button{font-family:inherit;}
 </div>
 
 <nav>
-  <button class="nb active" onclick="showScreen('analyze',this)">
-    <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>분석
+  <button class="nb active" onclick="showScreen(&#39;analyze&#39;,this)">
+    <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>분석
   </button>
-  <button class="nb" onclick="showScreen('valuation',this)">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>가치평가
+  <button class="nb" onclick="showScreen(&#39;valuation&#39;,this)">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>가치평가
   </button>
-  <button class="nb" onclick="showScreen('financials',this)">
-    <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>재무제표
+  <button class="nb" onclick="showScreen(&#39;financials&#39;,this)">
+    <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>재무제표
   </button>
-  <button class="nb" onclick="showScreen('screener',this)">
-    <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>스크리너
+  <button class="nb" onclick="showScreen(&#39;screener&#39;,this)">
+    <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>스크리너
   </button>
-  <button class="nb" onclick="showScreen('alarms',this)">
-    <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>알람
+  <button class="nb" onclick="showScreen(&#39;alarms&#39;,this)">
+    <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>알람
   </button>
 </nav>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/3.0.1/chartjs-plugin-annotation.min.js"></script>
+<script src="./나의 주식 앱_files/chart.umd.js.다운로드"></script>
+<script src="./나의 주식 앱_files/chartjs-plugin-annotation.min.js.다운로드"></script>
 <script>
 const STOCK_MAP={'삼성전자':'005930.KS','SK하이닉스':'000660.KS','NAVER':'035420.KS','현대차':'005380.KS','카카오':'035720.KS','LS ELECTRIC':'010120.KS'};
 const FB={
@@ -401,17 +537,28 @@ function scoreStock(p,pts,rsi){
   return Math.min(100,Math.round(s));
 }
 
+// 코스피 종목코드
+const KOSPI_CODES=new Set(['005930','000660','035420','005380','035720','010120','068270','000270','373220','005490','105560','012450','034020','259960','010130','011200','207940','006400','066570','051910','096770','001040','000100','028050','086790','000080','003550','009540','010950','011170','012330','015760','017670','018260','020150','021240','023530','024110','028260','030200','032640','033780','034220','034730','034830','035250','036460','036570','037270','042660','047050','051600','051900','055550','060980','066570','069960','071050','078930','079550','081660','083420','086280','090430','095720','096770','097950','100840','103140','105560','111770','114090','117930','139480','145990','161390','175330','180640','192820','194370','207940','214420','247540','267250','272210','282330','293490','307950','316140','323410','326030','329180','334890','357120','361610','363280','365550','373220','377300','383220','400760','405640','412580','419530','421800','432360','436450']);
+
 const KR_CODES={
   '삼성전자':'005930','SK하이닉스':'000660','NAVER':'035420','현대차':'005380',
   '카카오':'035720','LS ELECTRIC':'010120','케어젠':'214370','셀트리온':'068270',
   '기아':'000270','LG에너지솔루션':'373220','포스코홀딩스':'005490','KB금융':'105560',
   '한화에어로스페이스':'012450','두산에너빌리티':'034020','크래프톤':'259960',
   '에코프로비엠':'247540','알테오젠':'196170','고려아연':'010130','HMM':'011200',
-  '삼성바이오로직스':'207940','카카오뱅크':'323410','삼성SDI':'006400','LG전자':'066570'
+  '삼성바이오로직스':'207940','카카오뱅크':'323410','삼성SDI':'006400','LG전자':'066570',
+  'HPSP':'403870','케어젠':'214370','리가켐바이오':'141080','파마리서치':'214450',
+  '에코프로':'086520','클래시스':'214150','레인보우로보틱스':'277810','이오테크닉스':'039030'
 };
+
+// 코스닥 종목 목록 (코스피에 없으면 코스닥으로 시도)
+const KOSDAQ_CODES=new Set(['403870','214370','141080','214450','086520','214150','277810','039030','196170','247540','259960','323410']);
+
 function getTickerKR(name){
   const code=KR_CODES[name]||(name.match(/^\d{6}$/)?name:null);
-  return code?`${code}.KS`:null;
+  if(!code) return null;
+  const market=KOSDAQ_CODES.has(code)?'KQ':'KS';
+  return `${code}.${market}`;
 }
 function openNaver(name){
   const code=KR_CODES[name]||(name.match(/^\d{6}$/)?name:null);
@@ -729,5 +876,6 @@ function renderAlarms(){
 updateAlarmUI();
 fetchAll();
 </script>
-</body>
-</html>
+
+
+</body></html>
